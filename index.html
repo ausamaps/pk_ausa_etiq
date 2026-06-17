@@ -369,6 +369,22 @@ document.getElementById('zoom-in').addEventListener('click', () => {
 document.getElementById('zoom-out').addEventListener('click', () => {
   map.zoomOut();
 });
+
+// Registrar Service Worker para caching offline
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => {
+        console.log('[App] Service Worker registrado:', reg.scope);
+        statusEl.textContent = 'App lista para usar offline';
+        statusEl.classList.add('visible');
+        setTimeout(() => statusEl.classList.remove('visible'), 3000);
+      })
+      .catch(err => {
+        console.warn('[App] Error registrando Service Worker:', err);
+      });
+  });
+}
 </script>
 </body>
 </html>

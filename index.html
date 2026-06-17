@@ -195,9 +195,9 @@ const UNIFORM_ZOOM = 15;
 // Las escalas 1/2/3 (cada 1000/500/250m) no llevan etiqueta para no saturar
 // los zooms lejanos; solo se etiquetan los puntos densos de la autopista.
 const LABEL_CONFIG = {
-  1: null,
-  2: null,
-  3: null,
+  1: { minZoom:11, className:'pk-label pk-label-far'   },
+  2: { minZoom:13, className:'pk-label pk-label-far'   },
+  3: { minZoom:14, className:'pk-label pk-label-far'   },
   4: { minZoom:15, className:'pk-label pk-label-far'   },
   5: { minZoom:18, className:'pk-label pk-label-close' }
 };
@@ -226,8 +226,8 @@ PK_DATA.forEach(p => {
   const style = CIRCLE_STYLE[cfg.style];
   const m = L.circleMarker([p.lat, p.lng], style);
 
-  // Etiqueta de PK con halo amarillo, igual estilo que el SLD original.
-  // Permanente (no requiere hover) y sin flecha, posicionada a la derecha del punto.
+  // Etiqueta de PK con halo amarillo - para TODAS las escalas
+  // La visibilidad se controla por zoom en updateLayers()
   const labelCfg = LABEL_CONFIG[p.escala];
   if (labelCfg) {
     m.bindTooltip(p.pk, {
